@@ -1,0 +1,112 @@
+﻿@if (Convert.ToInt32(Session["rol"]) != 1 || Session["validate"] == null)
+{
+    <script>
+            document.location.href = "@Url.Content("~/Login/Index")";
+    </script>
+}
+
+
+@model  List<APP_NETLINK.Models.TableViewModels.UserTableViewModel>
+@{
+    ViewBag.Title = "Lista de usuarios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="row mt-3">
+    <div class="col-lg-12">
+
+        <div class="card">
+
+            <div class="card-header">
+                <h2 class="text-center">Lista de Usuarios</h2>
+
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        <button type="button" class="btn btn-primary mb-3 pb-0" onclick="document.location.href='@Url.Content("~/User/Insert")'">
+                            <p class=""><i class="far fa-user" style="margin-right:10px;"></i>Agregar Usuario</p>
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card-body">
+
+                <table class="table table-bordered datatable" id="table">
+                    <tr class="bg-dark text-light">
+                        <th>Id</th>
+                        <th>Correo</th>
+                        <th>Usuario</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Acciones</th>
+
+                    </tr>
+
+                    @foreach (var oElemento in Model)
+                    {
+                        <tr>
+                            <td>@oElemento.id</td>
+                            <td>@oElemento.email</td>
+                            <td>@oElemento.nombreUsuario</td>
+                            <td>@oElemento.nombre</td>
+                            <td>@oElemento.apellido</td>
+
+                            <td>
+
+                                <button style="display:none;" type="button" onclick="document.location.href='@Url.Content("~/user/Update/"+oElemento.id)'" class="btn btn-default"><i class="fas fa-edit"></i></button>
+                                <button type="button" onclick="jsDelete(@oElemento.id);" value="Eliminar" class="btn btn-danger"> <i class="fas fa-trash"></i></button>
+
+                            </td>
+
+                        </tr>
+                    }
+                </table>
+
+            </div>
+            <div class="card-footer"></div>
+
+        </div>
+
+
+    </div>
+</div>
+@section scripts
+{
+    <script>
+
+        function jsDelete(id){
+
+            if (confirm("Esta seguro que desea eliminar???")) {
+
+                url = "@Url.Content("~/User/Delete")"+"/"+id;
+
+                 $.post(url,function(data){
+                    if(data=="1"){
+                        swal({
+                        title: "Acción completada",
+                        text: "El registro se ha eliminado correctamente",
+                        type: "success",
+                        });
+                        document.location.href="@Url.Content("~/User")"
+                    }
+                    else{
+                        swal({
+                        title: "Error al eliminar el registro",
+                        text: "Intentelo de nuevo...",
+                        type: "warning",
+                        });
+                    }
+            })
+            }
+
+        }
+
+    </script>
+}
+

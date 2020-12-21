@@ -1,0 +1,92 @@
+﻿@model APP_NETLINK.Models.ViewModels.EditGenderViewModel
+
+@{
+    ViewBag.Title = "Actualizar datos::género";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+}
+@if (Convert.ToInt32(Session["rol"]) != 1 || Session["validate"] == null)
+{
+
+    <script>
+            document.location.href = "@Url.Content("~/Login/Index")";
+    </script>
+
+}
+<div class="row mt-3">
+
+    <div class="col-md-12">
+
+        <div class="card w-75 mx-auto">
+
+            <div class="card-header bg-primary font-weight-bolder">
+
+                <p class="text-center text-monospace font-weight-bolder"><i class="fas fa-film" style="margin-right:10px;"></i>Actualizar Género</p>
+
+            </div>
+            <div class="card-body">
+
+
+                @using (Html.BeginForm("Update", "Gender", FormMethod.Post, new { role = "form-control", @class = "mx-auto w-100" }))
+                {
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationMessage("error", new { @class = "text-danger" })
+
+                    <div class="form-group row">
+
+                        <div class="col-md-6 mx-auto">
+                            @Html.LabelFor(data => data.genero)
+                            @Html.TextBoxFor(data => data.genero, new { @class = "form-control" })
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-6 mx-auto">
+                            <input type="submit" name="" value="Guardar" class="btn btn-primary btn-block mt-2 mb-2" />
+                        </div>
+                    </div>
+
+                }
+
+            </div>
+            <div class="card-footer">
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+@if (Session["update"] == "success")
+{
+
+    Session["update"] = null;
+    <script>
+        swal({
+            title: "Acción completada",
+            text: "Actualización completada con éxito.",
+            type: "success",
+        });
+    </script>
+
+}
+
+@if (Session["update"] == "failed")
+{
+    Session["update"] = null;
+
+    <script>
+        swal({
+            title: "Error al ingresar los datos",
+            text: "Intentelo de nuevo...",
+            type: "warning",
+        });
+    </script>
+}

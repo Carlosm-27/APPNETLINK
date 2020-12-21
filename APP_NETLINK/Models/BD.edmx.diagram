@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c603d519ea67435d9c172221a1179c28" Name="Diagram1">
+        <EntityTypeShape EntityType="BD_NETLINKModel.Categoria" PointX="5.375" PointY="6.75" Width="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_NETLINKModel.director" PointX="7.375" PointY="7.875" Width="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_NETLINKModel.genero" PointX="5.375" PointY="3.75" Width="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_NETLINKModel.Idioma" PointX="3.375" PointY="3.75" Width="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_NETLINKModel.multimedia" PointX="7.625" PointY="2.5" Width="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_NETLINKModel.pais" PointX="0.75" PointY="8.25" Width="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_NETLINKModel.PeliculasPorVer" PointX="3" PointY="9.375" Width="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_NETLINKModel.rol" PointX="0.75" PointY="5.375" Width="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_NETLINKModel.serie" PointX="3.375" PointY="6.75" Width="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_NETLINKModel.sysdiagrams" PointX="5.375" PointY="0.75" Width="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_NETLINKModel.tipo_multimedia" PointX="3.375" PointY="0.75" Width="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_NETLINKModel.usuario" PointX="0.75" PointY="0.75" Width="1.5" IsExpanded="true" />
+        <AssociationConnector ManuallyRouted="false" Association="BD_NETLINKModel.fk_MC" />
+        <AssociationConnector ManuallyRouted="false" Association="BD_NETLINKModel.fk_DP" />
+        <AssociationConnector ManuallyRouted="false" Association="BD_NETLINKModel.fk_MD" />
+        <AssociationConnector ManuallyRouted="false" Association="BD_NETLINKModel.fk_MG" />
+        <AssociationConnector ManuallyRouted="false" Association="BD_NETLINKModel.fk_MI" />
+        <AssociationConnector ManuallyRouted="false" Association="BD_NETLINKModel.fk_MP" />
+        <AssociationConnector ManuallyRouted="false" Association="BD_NETLINKModel.fk_MTM" />
+        <AssociationConnector ManuallyRouted="false" Association="BD_NETLINKModel.fk_PPVM" />
+        <AssociationConnector ManuallyRouted="false" Association="BD_NETLINKModel.fk_SM" />
+        <AssociationConnector ManuallyRouted="false" Association="BD_NETLINKModel.fk_PPVU" />
+        <AssociationConnector ManuallyRouted="false" Association="BD_NETLINKModel.fk_UR" />
+        <AssociationConnector Association="BD_NETLINKModel.fk_PPVU1" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

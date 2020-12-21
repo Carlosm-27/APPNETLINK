@@ -1,0 +1,210 @@
+﻿@if (Session["validate"] == null)
+{
+    <script>
+            document.location.href = "@Url.Content("~/Login/Index")";
+    </script>
+}
+
+@model APP_NETLINK.Models.ViewModels.EditUserViewModel
+@{
+    ViewBag.Title = "Datos de usuario";
+
+    if (Convert.ToInt32(Session["rol"]) == 1) {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    else { 
+        Layout = "~/Views/Shared/_LayoutUser.cshtml";
+    }
+}
+
+
+
+<div class="row mt-3">
+
+    <div class="col-md-12">
+
+        <div class="card w-75 mx-auto">
+
+            <div class="card-header bg-primary font-weight-bolder">
+
+                <p class="text-center text-monospace font-weight-bolder"><i class="far fa-user" style="margin-right:10px;"></i>Actualizar registro de usuario</p>
+
+            </div>
+            <div class="card-body">
+
+
+                <form id="frm_user" action="" method="post">
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationMessage("error", new { @class = "text-danger" })
+                    @Html.TextBoxFor(data => data.id, new { @class = "d-none" })
+
+                    <div class="form-group row">
+
+                        <div class="col-md-6">
+                            @Html.LabelFor(data => data.nombreUsuario)
+                            @Html.TextBoxFor(data => data.nombreUsuario, new { @class = "form-control" })
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            @Html.LabelFor(data => data.telefono)
+                            @Html.TextBoxFor(data => data.telefono, new { @class = "form-control" })
+                        </div>
+
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-6">
+                            @Html.LabelFor(data => data.nombre)
+                            @Html.TextBoxFor(data => data.nombre, new { @class = "form-control" })
+                        </div>
+
+                        <div class="col-md-6">
+
+                            @Html.LabelFor(data => data.apellido)
+                            @Html.TextBoxFor(data => data.apellido, new { @class = "form-control" })
+                        </div>
+
+
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-8">
+                            @Html.LabelFor(data => data.email)
+                            @Html.TextBoxFor(data => data.email, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row mb-0">
+
+                        <div class="col-md-6">
+                            @Html.LabelFor(data => data.password)
+
+                            <div class="input-group mb-3">
+
+
+                                @Html.TextBoxFor(data => data.password, new { @class = "form-control password" })
+                                <div class="input-group-append">
+                                    <div class="input-group-text bg-light">
+                                        <span class="fa fa-fw fa-eye password-icon show-password"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            @Html.LabelFor(data => data.confPassword)
+
+                            <div class="input-group">
+
+                                @Html.TextBoxFor(data => data.confPassword, new { @class = "form-control password2" })
+                                <div class="input-group-append">
+                                    <div class="input-group-text bg-light">
+                                        <span class="fa fa-fw fa-eye password-icon show-password2"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+            </div>
+            <div class="card-footer">
+
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <input type="submit" name="submit" value="Guardar cambios" class="btn btn-primary float-right">
+                    </div>
+                </div>
+
+                </form>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+</div>
+
+
+
+@section scripts{
+    <script>
+            $(document).ready(
+                function () {
+                    $("#frm_user").submit(function(e){
+                        e.preventDefault();
+                        url = "@Url.Content("~/User/Update")"
+                        parametros = $(this).serialize();
+
+                        $.post(url, parametros, function (data) {
+                            if (data == "True") {
+                                    swal({
+                                    title: "Acción completada",
+                                    text: "Registro completado con éxito.",
+                                    type: "success",
+                                    });
+                            } else {
+                                    swal({
+                                    title: "Error al ingresar los datos",
+                                    text: "Intentelo de nuevo...",
+                                    type: "warning",
+                                    });
+                            }
+                        })
+                    })
+                }
+            )
+
+
+        window.addEventListener("load", function () {
+
+            // icono para mostrar contraseña
+            showPassword = document.querySelector('.show-password');
+            showPassword.addEventListener('click', () => {
+
+                // elementos input de tipo clave
+                password = document.querySelector('.password');
+
+
+                if (password.type === "text") {
+                    password.type = "password"
+                    showPassword.classList.remove('fa-eye-slash');
+                } else {
+                    password.type = "text"
+                    showPassword.classList.toggle("fa-eye-slash");
+                }
+
+            })
+        });
+
+
+        window.addEventListener("load", function () {
+
+            // icono para mostrar contraseña
+            showPassword2 = document.querySelector('.show-password2');
+            showPassword2.addEventListener('click', () => {
+
+                // elementos input de tipo clave
+                password2 = document.querySelector('.password2');
+
+
+                if (password2.type === "text") {
+                    password2.type = "password"
+                    showPassword2.classList.remove('fa-eye-slash');
+                } else {
+                    password2.type = "text"
+                    showPassword2.classList.toggle("fa-eye-slash");
+                }
+
+            })
+        });
+
+    </script>
+}

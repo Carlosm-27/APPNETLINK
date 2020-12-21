@@ -1,0 +1,149 @@
+﻿@if (Convert.ToInt32(Session["rol"]) != 2 || Session["validate"] == null)
+{
+
+    <script>
+            document.location.href = "@Url.Content("~/Login/Index")";
+    </script>
+
+}
+
+
+@using APP_NETLINK.Models;
+@using APP_NETLINK.Models.TableViewModels;
+@using APP_NETLINK.Models.ViewModels;
+@using APP_NETLINK.Controllers;
+
+@model  List<APP_NETLINK.Models.TableViewModels.ShowMovieViewTableModel>
+
+@{
+    ViewBag.Title = "Mi lista";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+    ShowMovieController obj = new ShowMovieController();
+
+}
+<body>
+    <main>
+        <section class="py-5 text-center container">
+
+            <div class="album py-5 bg-light">
+                <div class="container">
+
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+                        @foreach (var oElemento in Model)
+                        {
+
+
+
+                            int id = Convert.ToInt32(oElemento.id_multimedia);
+
+                            List<MovieTableViewModel> lst = null;
+                            using (BD_NETLINKEntities1 bd = new BD_NETLINKEntities1())
+                            {
+                                lst = (from data in bd.multimedia
+                                       where data.Id_multimedia == id
+                                       select new MovieTableViewModel
+                                       {
+                                           enlace = data.enlace,
+                                           descripcion = data.descripcion,
+                                           titulo = data.Titulo,
+                                           id = data.Id_multimedia
+                                       }
+                                        ).ToList();
+                            }
+
+
+                            foreach (var oElemento2 in lst)
+                            {
+
+
+                                <div class="col">
+                                    <div class="card shadow-sm h-100">
+                                        <iframe width="100% height="300px" src=@oElemento2.enlace frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                        <div class="card-body">
+                                            <p class="card-text">
+                                                @oElemento2.descripcion
+                                            </p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="document.location.href='@Url.Content("~/Movie/ShowMovie/" + @oElemento2.id)'">Ver detalles</button>
+                                                    <button type="button" onclick="jsDelete(@oElemento2.id);" value="Eliminar" class="btn btn-sm btn-outline-danger">Eliminar de la lista</button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                        }
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+
+
+
+@section scripts{
+    <script>
+            $(document).ready(
+                function () {
+                    $(".frm_showmovie").submit(function(e){
+                        e.preventDefault();
+                        url = "@Url.Content("~/ShowMovie/ShowMovieInsert")"
+                        parametros = $(this).serialize();
+
+                        $.post(url, parametros, function (data) {
+                            if (data == "True") {
+                                    swal({
+                                    title: "Acción completada",
+                                    text: "Registro completado con éxito.",
+                                    type: "success",
+                                    });
+                            } else {
+                                    swal({
+                                    title: "Error al ingresar los datos",
+                                    text: "Intentelo de nuevo...",
+                                    type: "warning",
+                                    });
+                            }
+                        })
+                    })
+                }
+        )
+
+
+
+                function jsDelete(id){
+
+            if (confirm("Esta seguro que desea eliminar???")) {
+
+                url = "@Url.Content("~/ShowMovie/Delete")"+"/"+id;
+
+                 $.post(url,function(data){
+                    if(data=="1"){
+                        swal({
+                        title: "Acción completada",
+                        text: "El registro se ha eliminado correctamente",
+                        type: "success",
+                        });
+                        document.location.href="@Url.Content("~/ShowMovie")"
+                    }
+                    else{
+                        swal({
+                        title: "Error al eliminar el registro",
+                        text: "Ocurrio un error inesperado...",
+                        type: "warning",
+                        });
+                    }
+            })
+            }
+
+        }
+
+    </script>
+}
+
+

@@ -1,0 +1,147 @@
+﻿@if (Session["validate"] == null)
+{
+    <script>
+            document.location.href = "@Url.Content("~/Login/Index")";
+    </script>
+}
+
+@model APP_NETLINK.Models.ViewModels.MovieViewModel
+
+@using APP_NETLINK.Models;
+@using APP_NETLINK.Models.TableViewModels;
+@using APP_NETLINK.Models.ViewModels;
+@using APP_NETLINK.Controllers;
+
+@{
+    ViewBag.Title = Model.titulo;
+
+
+    if (Convert.ToInt32(Session["rol"]) != 1)
+    {
+        Layout = "~/Views/Shared/_LayoutUser.cshtml";
+    }
+    else { 
+        Layout = "~/Views/Shared/_Layout.cshtml";    
+    }
+
+
+    MovieController oMovie = new MovieController();
+
+    var languaje = oMovie.Languaje();
+
+    string languajeShow = "";
+    foreach (var oElemento in languaje)
+    {
+
+        if (oElemento.id == Model.id_idioma)
+        {
+            languajeShow = oElemento.idioma;
+        }
+    }
+
+    var country = oMovie.Country();
+
+    string countryShow = "";
+    foreach (var oElemento in country)
+    {
+
+        if (oElemento.id == Model.id_idioma)
+        {
+            countryShow = oElemento.pais;
+        }
+    }
+
+    var multimedia = oMovie.MultimediaType();
+
+    string MultimediaShow = "";
+    foreach (var oElemento in multimedia)
+    {
+
+        if (oElemento.id == Model.id_tipo_multimedia)
+        {
+            MultimediaShow = oElemento.tipo_multimedia;
+        }
+    }
+
+    var genero = oMovie.Gender();
+
+    string genderShow = "";
+    foreach (var oElemento in genero)
+    {
+
+        if (oElemento.id == Model.id_genero)
+        {
+            genderShow = oElemento.genero;
+        }
+    }
+
+    var director = oMovie.Director();
+
+    string directorShow = "";
+    foreach (var oElemento in director)
+    {
+
+        if (oElemento.id == Model.id_director)
+        {
+            directorShow = oElemento.director;
+        }
+    }
+
+    var categoria = oMovie.Category();
+
+    string categoriaShow = "";
+    foreach (var oElemento in categoria)
+    {
+
+        if (oElemento.id == Model.id_categoria)
+        {
+            categoriaShow = oElemento.categoria;
+        }
+    }
+
+}
+
+<div class="row mt-3">
+
+
+    <div class="col-md-8">
+
+        <div class="container-fluid w-100 h-75">
+            <iframe class="mt-1 mb-3" style="width:100%; height:140%; z-index: 100;" src=@Model.enlace frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card-header bg-primary">
+
+            @Model.titulo
+
+        </div>
+
+        <div class="card-body">
+
+            <ul style="list-style:none;">
+                <li><i class="fas fa-language fa-x4 mr-2"></i>Lenguaje: @languajeShow</li>
+                <li><i class="far fa-flag fa-x4 mr-2"></i>Pais: @countryShow</li>
+                <li><i class="fas fa-dot-circle fa-x4 mr-2"></i>Tipo: @MultimediaShow</li>
+                <li><i class="fas fa-theater-masks mr-2"></i> Género: @genderShow</li>
+                <li><i class="fas fa-bullhorn mr-2"></i></i>Director: @directorShow</li>
+                <li><i class="fas fa-certificate mr-2"></i>Categoria: @categoriaShow</li>
+            </ul>
+
+            <div class="card-text">
+                Descripción:
+                @Model.descripcion
+            </div>
+
+        </div>
+
+        <div class="card-footer">
+
+
+        </div>
+    </div>
+</div>
+
+

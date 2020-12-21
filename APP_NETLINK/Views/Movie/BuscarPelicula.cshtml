@@ -1,0 +1,189 @@
+﻿@if (Convert.ToInt32(Session["rol"]) != 2 || Session["validate"] == null)
+{
+
+    <script>
+            document.location.href = "@Url.Content("~/Login/Index")";
+    </script>
+
+}
+
+@using APP_NETLINK.Models;
+@using APP_NETLINK.Models.TableViewModels;
+@using APP_NETLINK.Models.ViewModels;
+@using APP_NETLINK.Controllers;
+
+@model APP_NETLINK.Models.ViewModels.MovieViewModel
+@{
+    ViewBag.Title = "Buscar Peliculas";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<div class="row mt-3">
+
+    <div class="col-md-12">
+
+        <div class="card w-75 mx-auto">
+
+            <div class="card-header bg-primary font-weight-bolder">
+
+                <p class="text-center text-monospace font-weight-bolder"><i class="fas fa-search" style="margin-right:10px;"></i>Buscar Pelicula</p>
+
+            </div>
+            <div class="card-body">
+
+
+                <form class="form-control" id="frm_move" method="post" action="~/Movie/Filter">
+
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationMessage("error", new { @class = "text-danger" })
+
+
+                    <div class="form-group row">
+                        <div class="col-md-6 mx-auto">
+
+                            @Html.LabelFor(data => data.id_categoria)
+
+                            @{
+                                List<CategoryTableViewModel> lstCat = null;
+                            }
+
+                            @using (BD_NETLINKEntities1 bd = new BD_NETLINKEntities1())
+                            {
+
+                                lstCat = (from data in bd.Categoria
+
+                                          select new CategoryTableViewModel
+                                          {
+                                              id = data.Id_Categoria,
+                                              categoria = data.nombre
+                                          }
+                                ).ToList();
+                            }
+
+                            <select class=" form-control" name="category">
+                                @foreach (var oElemento in lstCat)
+                                {
+
+                                    <option value="@oElemento.id"> @oElemento.categoria</option>
+
+                                }
+                            </select>
+
+                        </div>
+                        <div class="col-md-6 mx-auto">
+                            @Html.LabelFor(data => data.id_genero)
+
+                            @{
+                                List<GenderTableViewModel> lst2 = null;
+                            }
+
+                            @using (BD_NETLINKEntities1 bd = new BD_NETLINKEntities1())
+                            {
+
+                                lst2 = (from data in bd.genero
+
+                                        select new GenderTableViewModel
+                                        {
+                                            id = data.Id_genero,
+                                            genero = data.nombre
+                                        }
+                                ).ToList();
+                            }
+
+                            <select class=" form-control" name="gender">
+                                @foreach (var oElemento in lst2)
+                                {
+
+
+                                    <option value="@oElemento.id"> @oElemento.genero</option>
+
+                                }
+                            </select>
+                        </div>
+
+                    </div>
+
+
+
+
+                    <div class="form-group row">
+
+                        <div class="col-md-6 mx-auto">
+                            @Html.LabelFor(data => data.id_pais)
+
+
+                            @{
+                                List<CountryTableViewModel> lstCountry = null;
+
+                                MovieController objMovie = new MovieController();
+                                lstCountry = objMovie.Country();
+                            }
+
+                            <select class=" form-control" name="country">
+                                @foreach (var oElemento in lstCountry)
+                                {
+
+                                    <option value="@oElemento.id"> @oElemento.pais</option>
+
+                                }
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mx-auto">
+                            @Html.LabelFor(data => data.id_idioma)
+
+                            @{
+                                List<LanguajeTableViewModel> lstLanguaje = null;
+
+                                MovieController objML = new MovieController();
+                                lstLanguaje = objMovie.Languaje();
+                            }
+
+                            <select class=" form-control" name="languaje">
+                                @foreach (var oElemento in lstLanguaje)
+                                {
+
+                                    <option value="@oElemento.id"> @oElemento.idioma</option>
+
+                                }
+                            </select>
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="form-group row">
+                        <div class="col-md-6 mx-auto">
+                            <input type="submit" name="" value="Realizar Búsquedad" class="btn btn-primary btn-block mt-2 mb-2" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section scripts{
+    <script>
+            $(document).ready(
+                function () {
+                    $("#frm_movie").submit(function(e){
+                        e.preventDefault();
+                        url = "@Url.Content("~/Movie/Filter")"
+                        parametros = $(this).serialize();
+
+                        $.post(url, parametros, function (data) {
+                        })
+                    })
+                }
+            )
+    </script>
+}

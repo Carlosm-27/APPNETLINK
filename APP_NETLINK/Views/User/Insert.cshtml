@@ -1,0 +1,222 @@
+﻿@model APP_NETLINK.Models.ViewModels.UserViewModel
+
+
+@{
+    ViewBag.Title = "Nuevo usuario";
+
+    if (Convert.ToInt32(Session["rol"]) != 1 || Session["validate"] == null)
+    {
+        Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+}
+
+
+<div class="row mt-3">
+
+    <div class="col-md-12">
+
+        <div class="card w-75 mx-auto">
+
+            <div class="card-header bg-primary font-weight-bolder">
+
+                <p class="text-center text-monospace font-weight-bolder"><i class="far fa-user" style="margin-right:10px;"></i>Registro de usuarios</p>
+
+            </div>
+            <div class="card-body">
+
+
+                @using (Html.BeginForm("Insert", "User", FormMethod.Post, new { role = "form-control", @class = "mx-auto w-75" }))
+                {
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationMessage("error", new { @class = "text-danger" })
+
+                    <div class="form-group row">
+
+                        <div class="col-md-6">
+                            @Html.LabelFor(data => data.nombreUsuario)
+                            @Html.TextBoxFor(data => data.nombreUsuario, new { @class = "form-control" })
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            @Html.LabelFor(data => data.telefono)
+                            @Html.TextBoxFor(data => data.telefono, new { @class = "form-control" })
+                        </div>
+
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-6">
+                            @Html.LabelFor(data => data.nombre)
+                            @Html.TextBoxFor(data => data.nombre, new { @class = "form-control" })
+                        </div>
+
+                        <div class="col-md-6">
+
+                            @Html.LabelFor(data => data.apellido)
+                            @Html.TextBoxFor(data => data.apellido, new { @class = "form-control" })
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="form-group row">
+                        <div class="col-md-8">
+                            @Html.LabelFor(data => data.email)
+                            @Html.TextBoxFor(data => data.email, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+
+                        <div class="col-md-6">
+                            @Html.LabelFor(data => data.password)
+
+                            <div class="input-group mb-3">
+
+
+                                @Html.TextBoxFor(data => data.password, new { @class = "form-control password" })
+                                <div class="input-group-append">
+                                    <div class="input-group-text bg-light">
+                                        <span class="fa fa-fw fa-eye password-icon show-password"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            @Html.LabelFor(data => data.confPassword)
+
+                            <div class="input-group mb-3">
+
+                                @Html.TextBoxFor(data => data.confPassword, new { @class = "form-control password2" })
+                                <div class="input-group-append">
+                                    <div class="input-group-text bg-light">
+                                        <span class="fa fa-fw fa-eye password-icon show-password2"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <input type="submit" name="" value="Guardar" class="btn btn-primary btn-block mt-2 mb-2" />
+                        </div>
+                    </div>
+                }
+
+            </div>
+            <div class="card-footer">
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+</div>
+
+
+
+@if (Session["insert"] == "success")
+{
+
+    Session["insert"] = null;
+    <script>
+        swal({
+            title: "Acción completada",
+            text: "Nuevo usuario registrado.",
+            type: "success",
+        });
+    </script>
+
+}
+
+@if (Session["insert"] == "failed")
+{
+    Session["insert"] = null;
+
+    <script>
+        swal({
+            title: "Error al ingresar los datos",
+            text: "Intentelo de nuevo...",
+            type: "warning",
+        });
+    </script>
+}
+
+@if (Session["insert"] == "failedPassword")
+{
+    Session["insert"] = null;
+
+    <script>
+        swal({
+            title: "Error al ingresar los datos",
+            text: "Las contraseñas ingresadas son diferentes...",
+            type: "warning",
+        });
+    </script>
+}
+
+
+
+@section scripts{
+    <script>
+
+        window.addEventListener("load", function () {
+
+            // icono para mostrar contraseña
+            showPassword = document.querySelector('.show-password');
+            showPassword.addEventListener('click', () => {
+
+                // elementos input de tipo clave
+                password = document.querySelector('.password');
+
+
+                if (password.type === "text") {
+                    password.type = "password"
+                    showPassword.classList.remove('fa-eye-slash');
+                } else {
+                    password.type = "text"
+                    showPassword.classList.toggle("fa-eye-slash");
+                }
+
+            })
+        });
+
+
+        window.addEventListener("load", function () {
+
+            // icono para mostrar contraseña
+            showPassword2 = document.querySelector('.show-password2');
+            showPassword2.addEventListener('click', () => {
+
+                // elementos input de tipo clave
+                password2 = document.querySelector('.password2');
+
+
+                if (password2.type === "text") {
+                    password2.type = "password"
+                    showPassword2.classList.remove('fa-eye-slash');
+                } else {
+                    password2.type = "text"
+                    showPassword2.classList.toggle("fa-eye-slash");
+                }
+
+            })
+        });
+
+    </script>
+}

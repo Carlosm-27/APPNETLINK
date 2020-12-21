@@ -1,0 +1,296 @@
+﻿@if (Convert.ToInt32(Session["rol"]) != 1 || Session["validate"] == null)
+{
+    <script>
+            document.location.href = "@Url.Content("~/Login/Index")";
+    </script>
+}
+
+@using APP_NETLINK.Models;
+@using APP_NETLINK.Models.TableViewModels;
+@using APP_NETLINK.Models.ViewModels;
+@using APP_NETLINK.Controllers;
+
+@model APP_NETLINK.Models.ViewModels.MovieViewModel
+
+@{
+    ViewBag.Title = "Registrar pelicula";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mt-3">
+
+    <div class="col-md-12">
+
+        <div class="card w-75 mx-auto">
+
+            <div class="card-header bg-primary font-weight-bolder">
+
+                <p class="text-center text-monospace font-weight-bolder"><i class="fas fa-video" style="margin-right:10px;"></i>Registro de Peliculas</p>
+
+            </div>
+            <div class="card-body">
+
+
+                <form class="form-control mx-auto" id="frm_movie" method="post" action="">
+
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationMessage("error", new { @class = "text-danger" })
+
+
+                    <div class="form-group row ml-3">
+                        <div class="col-md-5 ">
+                            @Html.LabelFor(data => data.titulo)
+                            <input type="text" class="form-control" name="title" />
+                        </div>
+
+
+                        <div class="col-md-5 ">
+                            @Html.LabelFor(data => data.enlace)
+                            <input type="text" class="form-control" name="link" />
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row ml-3">
+                        <div class="col-md-5">
+                            @Html.LabelFor(data => data.id_genero)
+
+                            @{
+                                List<GenderTableViewModel> lst2 = null;
+                            }
+
+                            @using (BD_NETLINKEntities1 bd = new BD_NETLINKEntities1())
+                            {
+
+                                lst2 = (from data in bd.genero
+
+                                        select new GenderTableViewModel
+                                        {
+                                            id = data.Id_genero,
+                                            genero = data.nombre
+                                        }
+                                ).ToList();
+                            }
+
+                            <select class=" form-control" name="gender">
+                                @foreach (var oElemento in lst2)
+                                {
+                                    <option value="@oElemento.id"> @oElemento.genero</option>
+                                }
+                            </select>
+                        </div>
+
+
+                        <div class="col-md-5">
+                            @Html.LabelFor(data => data.id_categoria)
+
+                            @{
+                                List<CategoryTableViewModel> lstCat = null;
+                            }
+
+                            @using (BD_NETLINKEntities1 bd = new BD_NETLINKEntities1())
+                            {
+
+                                lstCat = (from data in bd.Categoria
+
+                                          select new CategoryTableViewModel
+                                          {
+                                              id = data.Id_Categoria,
+                                              categoria = data.nombre
+                                          }
+                                ).ToList();
+                            }
+
+                            <select class=" form-control" name="category">
+                                @foreach (var oElemento in lstCat)
+                                {
+
+                                    <option value="@oElemento.id"> @oElemento.categoria</option>
+
+                                }
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row ml-3">
+                        <div class="col-md-5">
+                            @Html.LabelFor(data => data.id_pais)
+
+
+                            @{
+                                List<CountryTableViewModel> lstCountry = null;
+
+                                MovieController objMovie = new MovieController();
+                                lstCountry = objMovie.Country();
+                            }
+
+                            <select class=" form-control" name="country">
+                                @foreach (var oElemento in lstCountry)
+                                {
+
+                                    <option value="@oElemento.id"> @oElemento.pais</option>
+
+                                }
+                            </select>
+                        </div>
+
+
+                        <div class="col-md-5">
+                            @Html.LabelFor(data => data.id_idioma)
+
+                            @{
+                                List<LanguajeTableViewModel> lstLanguaje = null;
+
+                                MovieController objML = new MovieController();
+                                lstLanguaje = objMovie.Languaje();
+                            }
+
+                            <select class=" form-control" name="languaje">
+                                @foreach (var oElemento in lstLanguaje)
+                                {
+
+                                    <option value="@oElemento.id"> @oElemento.idioma</option>
+
+                                }
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row ml-3">
+                        <div class="col-md-5">
+
+                            @Html.LabelFor(data => data.id_director)
+
+                            @{
+                                List<DirectorTableViewModel> lst = null;
+                            }
+
+                            @using (BD_NETLINKEntities1 bd = new BD_NETLINKEntities1())
+                            {
+
+                                lst = (from data in bd.director
+
+                                       select new DirectorTableViewModel
+                                       {
+                                           id = data.Id_director,
+                                           director = data.nombre
+                                       }
+                                ).ToList();
+                            }
+
+                            <select class=" form-control" name="director" id="director">
+                                @foreach (var oElemento in lst)
+                                {
+
+                                    <option value="@oElemento.id"> @oElemento.director</option>
+
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row ml-3">
+                        <div class="col-md-8">
+                            @Html.LabelFor(data => data.descripcion)
+                            <textarea class="form-control" name="description">
+                            </textarea>
+                        </div>
+                    </div>   
+                    
+                    
+                    <div class="frm_form">
+
+
+                        <div class="form-group row ml-3">
+                                <div class="col-md-5 ">
+                                    <label> Nombre del capitulo</label>
+                                    <input type="text" class="form-control" name="titleCap" />
+                                </div>
+
+                                <div class="col-md-5">
+                                    <label> N° del capitulo</label>
+                                    <input type="number" class="form-control" name="numCap" readonly value="1"/>
+                                </div>
+                        </div>
+                    </div>
+
+
+</div>
+            <div class="card-footer">
+
+
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <input type="submit" name="" value="Registrar Pelicula" class="btn btn-primary float-right" />
+                    </div>
+                </div>
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section scripts{
+    <script>
+
+
+      $(document).ready(function(){
+		$('#multimediaType').val(1);
+		ShowSeries();
+
+          $('#multimediaType').change(function () {
+              ShowSeries();
+		});
+      })
+
+        function ShowSeries() {
+
+            var ot = $('#multimediaType').val();
+
+            if (ot == 1) {
+                $(".frm_form").hide();
+            } else if (ot == 2) {
+                $(".frm_form").show();
+            } else {
+                $(".frm_form").hide();
+            }
+        }
+
+
+            $(document).ready(
+                function () {
+                    $("#frm_movie").submit(function(e){
+                        e.preventDefault();
+                        url = "@Url.Content("~/Movie/Insert")"
+                        parametros = $(this).serialize();
+
+                        $.post(url, parametros, function (data) {
+                            if (data == "true") {
+                                    swal({
+                                    title: "Acción completada",
+                                    text: "Registro completado con éxito.",
+                                    type: "success",
+                                    });
+                                    document.location.href = "@Url.Content("~/movie/insert")";
+                            } else {
+                                    swal({
+                                    title: "Error al ingresar los datos",
+                                    text: "Intentelo de nuevo...",
+                                    type: "warning",
+                                    });
+                            }
+                        })
+                    })
+                }
+            )
+    </script>
+}
+
